@@ -2,18 +2,18 @@
     <img src="worldgourd-logo.svg" alt="WorldGourd" width="400" /> 
 </h1>
 
-WorldGourd lets you protect your pumpkins from everything.
+WorldGourd lets you protect your pumpkins and other gourds from everything.
 
-* Block players breaking or carving pumpkins
-* Block creeper and wither pumpkin damage, etc.
-* Disable fire spread, lava fire spread, from damaging pumpkins.
-* Protect your pumpkins from various 'exploits'
-* Prevent WorldEdit from removing pumpkins
+* Block players breaking gourds or carving pumpkins
+* Block creeper and wither gourd damage, etc.
+* Disable fire spread, lava fire spread, from damaging gourds.
+* Protect your gourds from various 'exploits'
+* Prevent WorldEdit from removing gourds
 
 WorldGourd is open source and is available under the GNU
 General Public License v3.
 
-A Bukkit server implementation (such as [Paper](https://papermc.io)) and the [WorldEdit plugin](https://dev.bukkit.org/projects/worldedit) are required to use WorldGourd. 
+A Bukkit server implementation (such as [Paper](https://papermc.io)) and the [WorldEdit plugin](https://dev.bukkit.org/projects/worldedit) are required to use WorldGourd.
 
 Compiling
 ---------
