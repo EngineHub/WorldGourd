@@ -17,6 +17,7 @@ import com.sk89q.worldedit.world.block.BlockStateHolder;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,6 +27,7 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,7 +42,7 @@ public final class WorldGourdPlugin extends JavaPlugin implements Listener {
     }
 
     private boolean isGourd(Material material) {
-        return material == Material.PUMPKIN || material == Material.CARVED_PUMPKIN || material == Material.JACK_O_LANTERN;
+        return material == Material.PUMPKIN || material == Material.CARVED_PUMPKIN || material == Material.JACK_O_LANTERN || material == Material.PUMPKIN_PIE;
     }
 
     private void sendMessage(Player player) {
@@ -109,8 +111,18 @@ public final class WorldGourdPlugin extends JavaPlugin implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onItemConsumption(PlayerItemConsumeEvent event) {
         Material item = event.getItem().getType();
-        if (item == Material.PUMPKIN_PIE) {
+        if (isGourd(item)) {
             sendMessage(event.getPlayer());
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFrameRemoval(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof ItemFrame && isGourd(((ItemFrame) event.getEntity()).getItem().getType())) {
+            if (event.getDamager() instanceof Player) {
+                sendMessage((Player) event.getDamager());
+            }
             event.setCancelled(true);
         }
     }
