@@ -18,6 +18,8 @@ import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,10 +31,15 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
@@ -122,6 +129,15 @@ public final class WorldGourdPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onPlayerArmorStand(PlayerArmorStandManipulateEvent event) {
+        ItemStack armorStandItem = event.getArmorStandItem();
+        if (armorStandItem != null && isGourd(armorStandItem.getType())) {
+            sendMessage(event.getPlayer());
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onItemConsumption(PlayerItemConsumeEvent event) {
         Material item = event.getItem().getType();
         if (isGourd(item)) {
@@ -131,10 +147,31 @@ public final class WorldGourdPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onFrameRemoval(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof ItemFrame && isGourd(((ItemFrame) event.getEntity()).getItem().getType())) {
+    public void onFrameDamage(EntityDamageByEntityEvent event) {
+        Entity entity = event.getEntity();
+        boolean protectItemFrame = entity instanceof ItemFrame
+            && isGourd(((ItemFrame) entity).getItem().getType());
+        boolean protectArmorStand = entity instanceof ArmorStand
+            && Arrays.stream(((ArmorStand) entity).getEquipment().getArmorContents())
+            .anyMatch(is -> is != null && isGourd(is.getType()));
+
+        if (protectItemFrame || protectArmorStand) {
             if (event.getDamager() instanceof Player) {
                 sendMessage((Player) event.getDamager());
+            }
+            event.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFrameRemoval(HangingBreakEvent event) {
+        if (event.getEntity() instanceof ItemFrame && isGourd(((ItemFrame) event.getEntity()).getItem().getType())) {
+            if (event instanceof HangingBreakByEntityEvent) {
+                HangingBreakByEntityEvent byEntityEvent = (HangingBreakByEntityEvent) event;
+                if (byEntityEvent.getRemover() instanceof Player) {
+                    sendMessage((Player) byEntityEvent.getRemover());
+                }
             }
             event.setCancelled(true);
         }
