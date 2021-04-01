@@ -142,6 +142,7 @@ public final class WorldGourdPlugin extends JavaPlugin implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerShearSnowman(PlayerShearEntityEvent event) {
         if (event.getEntity() instanceof Snowman) {
+            sendMessage(event.getPlayer());
             event.setCancelled(true);
         }
     }
