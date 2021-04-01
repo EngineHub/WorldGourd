@@ -27,6 +27,7 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WorldGourdPlugin extends JavaPlugin implements Listener {
@@ -102,6 +103,15 @@ public final class WorldGourdPlugin extends JavaPlugin implements Listener {
         if (event.getClickedBlock() != null && isGourd(event.getClickedBlock().getType())) {
             event.setCancelled(true);
             sendMessage(event.getPlayer());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemConsumption(PlayerItemConsumeEvent event) {
+        Material item = event.getItem().getType();
+        if (item == Material.PUMPKIN_PIE) {
+            sendMessage(event.getPlayer());
+            event.setCancelled(true);
         }
     }
 
