@@ -22,6 +22,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowman;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -36,6 +37,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -133,6 +135,13 @@ public final class WorldGourdPlugin extends JavaPlugin implements Listener {
         ItemStack armorStandItem = event.getArmorStandItem();
         if (armorStandItem != null && isGourd(armorStandItem.getType())) {
             sendMessage(event.getPlayer());
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerShearSnowman(PlayerShearEntityEvent event) {
+        if (event.getEntity() instanceof Snowman) {
             event.setCancelled(true);
         }
     }
