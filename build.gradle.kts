@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.enginehub.worldgourd"
-version = "1.2.0-SNAPSHOT"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
