@@ -1,7 +1,8 @@
 name: worldgourd
-version: @version@
+version: "${version}"
 main: org.enginehub.worldgourd.bukkit.WorldGourdPlugin
-api-version: 1.16
+api-version: 1.20
 authors: [ EngineHub ]
 description: WorldGourd, a premier Minecraft pumpkin protection plugin
-depend: [ WorldEdit ]
+softdepend: [ WorldEdit ]
+folia-supported: true
