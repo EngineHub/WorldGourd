@@ -13,7 +13,7 @@ WorldGourd lets you protect your pumpkins and other gourds from everything.
 WorldGourd is open source and is available under the GNU
 General Public License v3.
 
-A Bukkit server implementation (such as [Paper](https://papermc.io)) and the [WorldEdit plugin](https://dev.bukkit.org/projects/worldedit) are required to use WorldGourd.
+A Bukkit server implementation (such as [Paper](https://papermc.io)) is required to use WorldGourd. [WorldEdit plugin](https://dev.bukkit.org/projects/worldedit) is optional.
 
 Compiling
 ---------
